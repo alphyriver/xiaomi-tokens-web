@@ -1,6 +1,9 @@
+# Cloudflare Pages config.
+# `index.html` is served as a static asset from dist/; everything under /api/*
+# is handled by functions/api/[[route]].ts, which wraps the Hono app in src/index.ts.
+#
+# The Workers deployment (`npm run deploy`) uses wrangler.workers.toml instead —
+# Pages configs do not support the `main` key.
 name = "xiaomi-token-web"
-main = "src/index.ts"
+pages_build_output_dir = "dist"
 compatibility_date = "2023-12-18"
-
-[env.production]
-name = "xiaomi-token-web-production"

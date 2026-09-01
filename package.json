@@ -7,11 +7,13 @@
     "node": ">=18"
   },
   "scripts": {
-    "dev": "wrangler dev src/index.ts",
-    "deploy": "wrangler deploy --minify src/index.ts",
+    "dev": "wrangler dev -c wrangler.workers.toml",
+    "deploy": "wrangler deploy -c wrangler.workers.toml --minify",
     "build": "tsc",
     "serve": "tsx watch src/server.ts",
-    "vercel-build": "echo 'No build needed'"
+    "vercel-build": "echo 'No build needed'",
+    "build:pages": "npm run build && rm -rf dist && mkdir -p dist && cp index.html dist/",
+    "dev:pages": "npm run build:pages && wrangler pages dev"
   },
   "dependencies": {
     "hono": "^4.8.4",
