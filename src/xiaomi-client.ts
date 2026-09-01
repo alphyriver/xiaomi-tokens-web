@@ -58,8 +58,7 @@ export class XiaomiCloudConnector {
           'User-Agent': this.agent,
           'Accept': 'application/json',
           'Cookie': `userId=${this.username}`
-        },
-        credentials: 'omit' // Don't send credentials cross-origin
+        }
       });
       
       if (!response.ok) {
@@ -93,7 +92,7 @@ export class XiaomiCloudConnector {
       "_json": "true",
       "qs": "%3Fsid%3Dxiaomiio%26_json%3Dtrue",
       "sid": "xiaomiio",
-      "_sign": this.sign,
+      "_sign": this.sign ?? "",
       "hash": hash,
       "callback": "https://sts.api.io.mi.com/sts",
       "user": this.username,
@@ -111,7 +110,7 @@ export class XiaomiCloudConnector {
         body: new URLSearchParams(fields).toString()
       });
       
-      const data = await response.json();
+      const data = await response.json<any>();
       
       if (data.code === 0) {
         this.ssecurity = data.ssecurity;
@@ -131,7 +130,7 @@ export class XiaomiCloudConnector {
       } else if (data.code === 20003) {
         // 2FA required
         this.verifyUrl = data.notificationUrl;
-        return { success: false, requires2FA: true, verifyUrl: this.verifyUrl };
+        return { success: false, requires2FA: true, verifyUrl: this.verifyUrl ?? undefined };
       } else {
         return { success: false, error: data.desc || "Login failed" };
       }
@@ -157,7 +156,7 @@ export class XiaomiCloudConnector {
           'User-Agent': this.agent
         }
       });
-      const data = await response.json();
+      const data = await response.json<any>();
       
       if (data && data.ssecurity) {
         this.ssecurity = data.ssecurity;
@@ -293,7 +292,7 @@ export class XiaomiCloudConnector {
 
     try {
       const response = await fetch(`${url}?${fullParams}`, { headers });
-      const data = await response.json();
+      const data = await response.json<any>();
       
       if (data.code === 0) {
         return { success: true, devices: data.result.list || [] };
