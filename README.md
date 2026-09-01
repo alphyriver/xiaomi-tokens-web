@@ -23,7 +23,7 @@ A modern web interface for extracting device tokens from your Xiaomi account. Bu
 
 ### Deploy Your Own (Recommended)
 
-[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/rankjie/xiaomi-tokens-web)
+[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/alphyriver/xiaomi-tokens-web)
 
 ### Use the Hosted Version (Use at Your Own Risk)
 Visit [https://xiaomi-token-web.asd.workers.dev/](https://xiaomi-token-web.asd.workers.dev/) - Not recommended for privacy-sensitive users.
@@ -61,14 +61,22 @@ npm run deploy
 ```
 
 ### Deploy to Cloudflare Pages
-1. Fork this repository
-2. Go to [Cloudflare Pages](https://pages.cloudflare.com/)
-3. Connect your GitHub account
-4. Create a new project and select your fork
-5. Use these build settings:
+1. Go to [Cloudflare Pages](https://pages.cloudflare.com/)
+2. Connect your GitHub account
+3. Create a new project and select this repository
+4. Use these build settings:
    - Framework preset: `None`
-   - Build command: `npm install && npm run build`
-   - Build output directory: `/`
+   - Build command: `npm run build:pages`
+   - Build output directory: `dist`
+
+`wrangler.toml` sets `pages_build_output_dir`, so once the project is
+connected the output directory is read from the repository and the
+dashboard field can be left alone.
+
+The static page is served from `dist/`, and every `/api/*` request is
+handled by `functions/api/[[route]].ts`, which mounts the same Hono app
+used by the Workers deployment. Run `npm run dev:pages` to serve both
+together locally.
 
 ### Deploy to other platforms
 The app is built with Hono.js which supports multiple platforms. Check [Hono's documentation](https://hono.dev/) for platform-specific deployment guides.

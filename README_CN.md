@@ -23,7 +23,7 @@
 
 ### 部署您自己的实例（推荐）
 
-[![部署到 Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/rankjie/xiaomi-tokens-web)
+[![部署到 Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/alphyriver/xiaomi-tokens-web)
 
 ### 使用在线版本（风险自负）
 访问 [https://xiaomi-token-web.asd.workers.dev/](https://xiaomi-token-web.asd.workers.dev/) - 不建议对隐私敏感的用户使用。
@@ -61,14 +61,20 @@ npm run deploy
 ```
 
 ### 部署到 Cloudflare Pages
-1. Fork 本仓库
-2. 访问 [Cloudflare Pages](https://pages.cloudflare.com/)
-3. 连接您的 GitHub 账户
-4. 创建新项目并选择您 fork 的仓库
-5. 使用以下构建设置：
+1. 访问 [Cloudflare Pages](https://pages.cloudflare.com/)
+2. 连接您的 GitHub 账户
+3. 创建新项目并选择本仓库
+4. 使用以下构建设置：
    - 框架预设：`None`
-   - 构建命令：`npm install && npm run build`
-   - 构建输出目录：`/`
+   - 构建命令：`npm run build:pages`
+   - 构建输出目录：`dist`
+
+`wrangler.toml` 中已设置 `pages_build_output_dir`，项目连接后会直接从仓库
+读取输出目录，控制台中的该字段无需填写。
+
+静态页面由 `dist/` 提供，所有 `/api/*` 请求由 `functions/api/[[route]].ts`
+处理，它挂载的是与 Workers 部署相同的 Hono 应用。本地可运行
+`npm run dev:pages` 同时启动两者。
 
 ### 部署到其他平台
 本应用基于 Hono.js 构建，支持多个平台。请查看 [Hono 文档](https://hono.dev/) 了解特定平台的部署指南。
